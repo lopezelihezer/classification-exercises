@@ -93,3 +93,16 @@ def get_iris_data():
         df.to_csv('iris_df.csv')
         
     return df
+
+# Applies transformations to iris DataFrame
+def prep_iris(df):
+    df = df.drop(columns = ['species_id'])
+    df = df.rename(columns= {'species_name':'species'})
+    df_dummy = pd.get_dummies(df[['species']])
+    return df, df_dummy
+
+# Splits dataFrame into train, validate, and test samples
+def split_iris_data(df):
+    train, test = train_test_split(df, test_size = 0.2, random_state = 123, stratify = df.species)
+    train, validate = train_test_split(train, test_size = 0.25, random_state = 123, stratify = train.species)
+    return train, validate, test
